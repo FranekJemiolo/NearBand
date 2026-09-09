@@ -39,10 +39,10 @@ export default function App() {
         <View style={styles.centerStage}>
           <View style={styles.tunerDisplayCard}>
             <Text style={styles.channelLabel}>ACTIVE FREQUENCY</Text>
-            <Text style={styles.channelDisplayNumber}>
+            <Text testID="channel-display-number" style={styles.channelDisplayNumber}>
               CH {channel.toString().padStart(2, '0')}
             </Text>
-            <Text style={styles.channelStatusText}>
+            <Text testID="channel-status-text" style={styles.channelStatusText}>
               {isTransmitting ? 'TRANSMITTING VOICE' : 'SCANNING AIRWAVES'}
             </Text>
           </View>

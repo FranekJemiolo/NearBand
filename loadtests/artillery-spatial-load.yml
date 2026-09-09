@@ -1,0 +1,42 @@
+config:
+  target: 'http://localhost:4000'
+  phases:
+    - duration: 15
+      arrivalRate: 10
+      rampTo: 50
+      name: 'Ramp up traffic to high-density grid'
+    - duration: 30
+      arrivalRate: 50
+      name: 'Sustain 500 concurrent spatial users'
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+
+scenarios:
+  - name: 'Proximity Channel 19 Join & Location Updates'
+    flow:
+      - post:
+          url: '/api/session'
+          json:
+            seed: 'artillery-user-{{ $randomString() }}'
+          capture:
+            - json: '$.userId'
+              as: 'userId'
+            - json: '$.handle'
+              as: 'handle'
+
+      - get:
+          url: '/api/spatial/nearby?channel=19&lat=37.7749&lon=-122.4194'
+          expect:
+            - statusCode: 200
+
+      - think: 1
+
+      - post:
+          url: '/api/moderation/squelch'
+          json:
+            gridId: 'grid_37d7_m122'
+            targetUserId: 'test_target'
+            reporterUserId: '{{ userId }}'
+          expect:
+            - statusCode: 200
