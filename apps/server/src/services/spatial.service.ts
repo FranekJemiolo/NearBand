@@ -87,13 +87,7 @@ export class SpatialEngineService {
         } else {
           const results = await (
             this.redis as unknown as { georadius: (...args: unknown[]) => Promise<string[]> }
-          ).georadius(
-            key,
-            coords.longitude,
-            coords.latitude,
-            radiusMeters,
-            'm',
-          );
+          ).georadius(key, coords.longitude, coords.latitude, radiusMeters, 'm');
           return (results as string[]) ?? [];
         }
       } catch {
