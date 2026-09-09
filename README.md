@@ -21,6 +21,14 @@ NearBand recreates the analog freedom and democratic tactility of citizen band (
   +----------------------+      +----------------------+      +----------------------+
 ```
 
+## Screenshots & Mobile Interface
+
+<p align="center">
+  <img src="docs/screenshots/tuner.jpg" width="320" alt="NearBand Minimalist Channel Tuner" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="docs/screenshots/transmitting.jpg" width="320" alt="NearBand Active Broadcasting" />
+</p>
+
 ## Features
 
 - **Strict Proximity Radius**: Transmit and receive audio only from users within 5 miles of your real-time coordinates.
