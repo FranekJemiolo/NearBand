@@ -174,9 +174,7 @@ describe('Hardware & Native Services', () => {
     });
 
     it('correctly maps DENIED status', async () => {
-      jest
-        .spyOn(PermissionsAndroid, 'request')
-        .mockResolvedValueOnce('denied' as PermissionStatus);
+      jest.spyOn(PermissionsAndroid, 'request').mockResolvedValueOnce('denied' as PermissionStatus);
       const status = await permissionsManager.requestFineLocation();
       expect(status).toBe('denied');
     });
