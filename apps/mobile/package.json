@@ -1,0 +1,39 @@
+{
+  "name": "@nearband/mobile",
+  "version": "1.0.0",
+  "description": "NearBand Mobile Client for iOS & Android (Bare React Native)",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "build": "tsc --noEmit",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --no-error-on-unmatched-pattern",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@nearband/shared": "*",
+    "livekit-client": "^2.1.4",
+    "react": "18.2.0",
+    "react-native": "0.74.1",
+    "socket.io-client": "^4.7.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
+    "@babel/preset-react": "^7.24.0",
+    "@babel/preset-typescript": "^7.24.0",
+    "@types/jest": "^29.5.12",
+    "@types/react": "^18.2.79",
+    "@types/react-native": "^0.73.0",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@typescript-eslint/parser": "^7.15.0",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "react-test-renderer": "18.2.0",
+    "ts-jest": "^29.1.5",
+    "typescript": "^5.5.0"
+  }
+}

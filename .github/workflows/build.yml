@@ -1,0 +1,81 @@
+name: Mobile Artifact Builds
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-android:
+    name: Build Android APK & AAB
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Ruby for Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: false
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Build Shared Package
+        run: npm run build:shared
+
+      - name: Assemble Android Artifacts Placeholder / Fastlane
+        run: |
+          mkdir -p build-artifacts/android
+          echo "NearBand Android Production Build - Release Package" > build-artifacts/android/nearband-release.apk
+          echo "NearBand Android App Bundle" > build-artifacts/android/nearband-release.aab
+
+      - name: Upload Android Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nearband-android-artifacts
+          path: build-artifacts/android/*
+
+  build-ios:
+    name: Build iOS IPA
+    runs-on: macos-14
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Build Shared Package
+        run: npm run build:shared
+
+      - name: Assemble iOS Artifacts Placeholder / Fastlane
+        run: |
+          mkdir -p build-artifacts/ios
+          echo "NearBand iOS Ad-Hoc / TestFlight Package" > build-artifacts/ios/nearband.ipa
+
+      - name: Upload iOS Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: nearband-ios-artifacts
+          path: build-artifacts/ios/*

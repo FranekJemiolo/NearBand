@@ -1,0 +1,53 @@
+{
+  "name": "nearband",
+  "version": "1.0.0",
+  "description": "NearBand - Anonymous, Location-Based Mobile CB Radio Application",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:server": "npm --workspace apps/server run dev",
+    "dev:web": "npm --workspace apps/web run dev",
+    "dev:mobile": "npm --workspace apps/mobile run start",
+    "build": "npm run build:shared && npm run build:server && npm run build:web",
+    "build:shared": "npm --workspace packages/shared run build",
+    "build:server": "npm --workspace apps/server run build",
+    "build:web": "npm --workspace apps/web run build",
+    "test": "npm run test:shared && npm run test:server && npm run test:mobile",
+    "test:shared": "npm --workspace packages/shared run test",
+    "test:server": "npm --workspace apps/server run test",
+    "test:mobile": "npm --workspace apps/mobile run test",
+    "test:coverage": "npm --workspace packages/shared run test:coverage && npm --workspace apps/server run test:coverage && npm --workspace apps/mobile run test:coverage",
+    "lint": "npm run lint:shared && npm run lint:server && npm run lint:mobile && npm run lint:web",
+    "lint:shared": "npm --workspace packages/shared run lint",
+    "lint:server": "npm --workspace apps/server run lint",
+    "lint:mobile": "npm --workspace apps/mobile run lint",
+    "lint:web": "npm --workspace apps/web run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css,yaml,yml}\" --ignore-path .prettierignore",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,css,yaml,yml}\" --ignore-path .prettierignore",
+    "type-check": "npm run type-check:shared && npm run type-check:server && npm run type-check:mobile && npm run type-check:web",
+    "type-check:shared": "npm --workspace packages/shared run type-check",
+    "type-check:server": "npm --workspace apps/server run type-check",
+    "type-check:mobile": "npm --workspace apps/mobile run type-check",
+    "type-check:web": "npm --workspace apps/web run type-check",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "concurrently": "^8.2.2",
+    "prettier": "^3.3.0",
+    "typescript": "^5.5.0"
+  },
+  "overrides": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}
