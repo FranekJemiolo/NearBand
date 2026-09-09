@@ -1,0 +1,12 @@
+devices([
+  "iPhone 15 Pro",
+  "iPhone 15 Pro Max"
+])
+
+languages([
+  "en-US"
+])
+
+scheme("NearBand")
+output_directory("./screenshots")
+clear_previous_screenshots(true)

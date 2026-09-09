@@ -1,0 +1,36 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Capture automated app screenshots"
+  lane :screenshots do
+    snapshot
+  end
+
+  desc "Build iOS IPA package"
+  lane :build_release do
+    build_app(
+      scheme: "NearBand",
+      export_method: "ad-hoc",
+      output_directory: "./build-artifacts/ios",
+      output_name: "NearBand.ipa"
+    )
+  end
+end
+
+platform :android do
+  desc "Build Android APK package"
+  lane :build_apk do
+    gradle(
+      task: "assembleRelease",
+      project_dir: "android/"
+    )
+  end
+
+  desc "Build Android AAB bundle"
+  lane :build_aab do
+    gradle(
+      task: "bundleRelease",
+      project_dir: "android/"
+    )
+  end
+end
