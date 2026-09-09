@@ -6,6 +6,103 @@ const mockComponent = name => {
   return Component;
 };
 
+const permissionsStore = {};
+let appStateCurrent = 'active';
+const appStateListeners = new Set();
+const eventEmitterListeners = {};
+
+const Platform = {
+  OS: 'ios',
+  select: obj => {
+    if (obj[Platform.OS] !== undefined) return obj[Platform.OS];
+    return obj.default;
+  },
+};
+
+const PermissionsAndroid = {
+  PERMISSIONS: {
+    ACCESS_FINE_LOCATION: 'android.permission.ACCESS_FINE_LOCATION',
+    ACCESS_COARSE_LOCATION: 'android.permission.ACCESS_COARSE_LOCATION',
+    ACCESS_BACKGROUND_LOCATION: 'android.permission.ACCESS_BACKGROUND_LOCATION',
+    RECORD_AUDIO: 'android.permission.RECORD_AUDIO',
+    POST_NOTIFICATIONS: 'android.permission.POST_NOTIFICATIONS',
+  },
+  RESULTS: {
+    GRANTED: 'granted',
+    DENIED: 'denied',
+    NEVER_ASK_AGAIN: 'never_ask_again',
+  },
+  check: jest.fn(async permission => {
+    return permissionsStore[permission] === 'granted';
+  }),
+  request: jest.fn(async (permission, _rationale) => {
+    const result = permissionsStore[permission] || 'granted';
+    permissionsStore[permission] = result;
+    return result;
+  }),
+  requestMultiple: jest.fn(async permissions => {
+    const results = {};
+    for (const p of permissions) {
+      results[p] = permissionsStore[p] || 'granted';
+    }
+    return results;
+  }),
+  __setPermission: (permission, status) => {
+    permissionsStore[permission] = status;
+  },
+  __resetPermissions: () => {
+    for (const key of Object.keys(permissionsStore)) {
+      delete permissionsStore[key];
+    }
+  },
+};
+
+const Vibration = {
+  vibrate: jest.fn(),
+  cancel: jest.fn(),
+};
+
+const AppState = {
+  currentState: 'active',
+  addEventListener: jest.fn((event, handler) => {
+    appStateListeners.add(handler);
+    return {
+      remove: () => appStateListeners.delete(handler),
+    };
+  }),
+  __simulateStateChange: newState => {
+    AppState.currentState = newState;
+    for (const listener of appStateListeners) {
+      listener(newState);
+    }
+  },
+};
+
+const DeviceEventEmitter = {
+  addListener: jest.fn((event, handler) => {
+    if (!eventEmitterListeners[event]) {
+      eventEmitterListeners[event] = new Set();
+    }
+    eventEmitterListeners[event].add(handler);
+    return {
+      remove: () => eventEmitterListeners[event]?.delete(handler),
+    };
+  }),
+  emit: jest.fn((event, data) => {
+    const handlers = eventEmitterListeners[event];
+    if (handlers) {
+      for (const h of handlers) {
+        h(data);
+      }
+    }
+  }),
+  __reset: () => {
+    for (const key of Object.keys(eventEmitterListeners)) {
+      delete eventEmitterListeners[key];
+    }
+  },
+};
+
 module.exports = {
   View: mockComponent('View'),
   Text: mockComponent('Text'),
@@ -30,8 +127,10 @@ module.exports = {
   StyleSheet: {
     create: styles => styles,
   },
-  Platform: {
-    OS: 'ios',
-    select: obj => obj.ios || obj.default,
-  },
+  Platform,
+  PermissionsAndroid,
+  Vibration,
+  AppState,
+  DeviceEventEmitter,
+  NativeModules: {},
 };
