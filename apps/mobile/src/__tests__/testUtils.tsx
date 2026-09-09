@@ -8,7 +8,10 @@ export function renderTestHook<T>(hook: () => T) {
     return null;
   }
 
-  const renderer = TestRenderer.create(<TestComponent />);
+  let renderer!: TestRenderer.ReactTestRenderer;
+  act(() => {
+    renderer = TestRenderer.create(<TestComponent />);
+  });
 
   const resultContainer = {
     get current() {
@@ -18,7 +21,11 @@ export function renderTestHook<T>(hook: () => T) {
 
   return {
     result: resultContainer,
-    unmount: () => renderer.unmount(),
+    unmount: () => {
+      act(() => {
+        renderer.unmount();
+      });
+    },
     act,
   };
 }
