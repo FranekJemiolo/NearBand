@@ -27,7 +27,7 @@
     "lint:web": "npm --workspace apps/web run lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css,yaml,yml}\" --ignore-path .prettierignore",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,css,yaml,yml}\" --ignore-path .prettierignore",
-    "type-check": "npm run type-check:shared && npm run type-check:server && npm run type-check:mobile && npm run type-check:web",
+    "type-check": "npm run build:shared && npm run type-check:shared && npm run type-check:server && npm run type-check:mobile && npm run type-check:web",
     "type-check:shared": "npm --workspace packages/shared run type-check",
     "type-check:server": "npm --workspace apps/server run type-check",
     "type-check:mobile": "npm --workspace apps/mobile run type-check",

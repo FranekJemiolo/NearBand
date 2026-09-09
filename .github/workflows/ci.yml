@@ -30,6 +30,9 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+      - name: Build Shared Types
+        run: npm run build:shared
+
       - name: Run TypeScript Type Check
         run: npm run type-check
 
